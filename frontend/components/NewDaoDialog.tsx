@@ -48,7 +48,7 @@ import {
   type TeamMember,
   type User,
 } from "@shared/dao";
-import { apiService } from "@/services/api";
+import { daoService } from "@/services/daoService";
 import { authService } from "@/services/authService";
 import { notificationService } from "@/services/notificationService";
 
@@ -131,7 +131,7 @@ export default function NewDaoDialog({
           setUsers(usersList);
 
           // Fetch next DAO number
-          const nextNumber = await apiService.getNextDaoNumber();
+          const nextNumber = await daoService.getNextDaoNumber();
           setFormData((prev) => ({ ...prev, numeroListe: nextNumber }));
         } catch (error) {
           console.warn("Failed to fetch data from server:", error);

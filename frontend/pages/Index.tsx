@@ -36,7 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { GRID_CLASSES } from "@/types/responsive";
-import { apiService } from "@/services/api";
+import { daoService } from "@/services/daoService";
 import { testProgressCalculations } from "@/utils/test-calculations";
 import { testGlobalStatistics } from "@/utils/test-global-stats";
 import { runAllTests } from "@/utils/test-dao-functionality";
@@ -289,7 +289,7 @@ export default function Index() {
       try {
         setLoading(true);
         setError(null);
-        const fetchedDaos = await apiService.getAllDaos();
+        const fetchedDaos = await daoService.getAllDaos();
         setDaos(fetchedDaos);
 
         // Run calculation tests in development
@@ -327,7 +327,7 @@ export default function Index() {
     newDaoData: Omit<Dao, "id" | "createdAt" | "updatedAt">,
   ) => {
     try {
-      const createdDao = await apiService.createDao(newDaoData);
+      const createdDao = await daoService.createDao(newDaoData);
       setDaos((prev) => [createdDao, ...prev]);
     } catch (err) {
       devLog.error("Error creating DAO:", err);

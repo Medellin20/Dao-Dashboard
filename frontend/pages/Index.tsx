@@ -41,6 +41,7 @@ import { testProgressCalculations } from "@/utils/test-calculations";
 import { testGlobalStatistics } from "@/utils/test-global-stats";
 import { runAllTests } from "@/utils/test-dao-functionality";
 import { testDaoService } from "@/utils/test-dao-service";
+import { testDaoCreation } from "@/utils/test-dao-creation";
 import {
   calculateDaoStatus,
   calculateDaoProgress,

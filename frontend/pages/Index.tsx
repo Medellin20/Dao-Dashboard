@@ -328,11 +328,14 @@ export default function Index() {
     newDaoData: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">,
   ) => {
     try {
+      devLog.log("🔄 Creating DAO with data:", newDaoData);
       const createdDao = await daoService.createDao(newDaoData);
+      devLog.log("✅ DAO created successfully:", createdDao);
       setDaos((prev) => [createdDao, ...prev]);
+      setError(null); // Clear any previous errors
     } catch (err) {
-      devLog.error("Error creating DAO:", err);
-      setError("Failed to create DAO");
+      devLog.error("❌ Error creating DAO:", err);
+      setError(`Failed to create DAO: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   };
 

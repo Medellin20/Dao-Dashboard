@@ -99,7 +99,7 @@ function generateDaoNumberFallback(existingDaos: any[]): string {
 }
 
 interface NewDaoDialogProps {
-  onCreateDao: (dao: Omit<Dao, "id" | "createdAt" | "updatedAt">) => void;
+  onCreateDao: (dao: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">) => void;
   existingDaos: Dao[];
 }
 

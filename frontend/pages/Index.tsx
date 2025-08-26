@@ -325,7 +325,7 @@ export default function Index() {
 
   // Handle creating new DAO
   const handleCreateDao = async (
-    newDaoData: Omit<Dao, "id" | "createdAt" | "updatedAt">,
+    newDaoData: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">,
   ) => {
     try {
       const createdDao = await daoService.createDao(newDaoData);

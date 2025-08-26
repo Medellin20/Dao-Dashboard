@@ -336,6 +336,20 @@ export default function Index() {
     }
   };
 
+  // Test du service DAO (Ctrl+Shift+D)
+  useEffect(() => {
+    const handleKeyDownDaoTest = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.shiftKey && event.key === "D") {
+        devLog.clear();
+        devLog.log("Test du service DAO...");
+        testDaoService();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDownDaoTest);
+    return () => window.removeEventListener("keydown", handleKeyDownDaoTest);
+  }, []);
+
   const filteredDaos = useDaoFilters(daos, searchTerm, filters);
 
   const stats = useDaoStats(daos);

@@ -340,18 +340,23 @@ export default function Index() {
     }
   };
 
-  // Test du service DAO (Ctrl+Shift+D)
+  // Tests de développement
   useEffect(() => {
-    const handleKeyDownDaoTest = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.ctrlKey && event.shiftKey && event.key === "D") {
         devLog.clear();
-        devLog.log("Test du service DAO...");
+        devLog.log("🧪 Test du service DAO...");
         testDaoService();
+      }
+      if (event.ctrlKey && event.shiftKey && event.key === "C") {
+        devLog.clear();
+        devLog.log("🧪 Test de création de DAO...");
+        testDaoCreation();
       }
     };
 
-    window.addEventListener("keydown", handleKeyDownDaoTest);
-    return () => window.removeEventListener("keydown", handleKeyDownDaoTest);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const filteredDaos = useDaoFilters(daos, searchTerm, filters);

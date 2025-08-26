@@ -1,4 +1,5 @@
-import { Dao, DEFAULT_TASKS, TeamMember } from "@shared/dao";
+import type { Dao, TeamMember } from "@shared/dao";
+import { DEFAULT_TASKS } from "@shared/dao";
 
 const sampleTeamMembers: TeamMember[] = [
   {

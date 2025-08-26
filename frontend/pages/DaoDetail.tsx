@@ -35,7 +35,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { apiService } from "@/services/api";
+import { daoService } from "@/services/daoService";
 import { taskService } from "@/services/taskService";
 import {
   calculateDaoStatus,
@@ -466,7 +466,7 @@ export default function DaoDetail() {
 
     saveTimeoutRef.current = setTimeout(async () => {
       try {
-        await apiService.updateDao(daoToSave.id, daoToSave, true); // Skip cache invalidation pour optimiser
+        await daoService.updateDao(daoToSave.id, daoToSave);
         devLog.log(`✅ DAO ${daoToSave.id} saved successfully`);
       } catch (error) {
         devLog.error("Error saving DAO:", error);
@@ -487,7 +487,7 @@ export default function DaoDetail() {
       try {
         setLoading(true);
         setError(null);
-        const fetchedDao = await apiService.getDaoById(id);
+        const fetchedDao = await daoService.getDaoById(id);
         setDao(fetchedDao);
       } catch (err) {
         devLog.error("Error loading DAO:", err);
@@ -710,7 +710,7 @@ export default function DaoDetail() {
 
       // Recharger les données en cas d'erreur pour annuler la mise à jour optimiste
       try {
-        const freshDao = await apiService.getDaoById(dao.id);
+        const freshDao = await daoService.getDaoById(dao.id);
         setDao(freshDao);
       } catch (reloadError) {
         devLog.error("Error reloading DAO after failed update:", reloadError);
@@ -743,7 +743,7 @@ export default function DaoDetail() {
 
       // Recharger les données en cas d'erreur pour annuler la suppression optimiste
       try {
-        const freshDao = await apiService.getDaoById(dao.id);
+        const freshDao = await daoService.getDaoById(dao.id);
         setDao(freshDao);
       } catch (reloadError) {
         devLog.error("Error reloading DAO after failed deletion:", reloadError);
@@ -759,7 +759,7 @@ export default function DaoDetail() {
     if (!dao) return;
 
     try {
-      const updatedDao = await apiService.updateDao(dao.id, {
+      const updatedDao = await daoService.updateDao(dao.id, {
         tasks: dao.tasks.map((task) =>
           task.id === taskId ? { ...task, assignedTo: memberId } : task,
         ),
@@ -976,7 +976,7 @@ export default function DaoDetail() {
     setIsDeleting(true);
     try {
       if (dao) {
-        await apiService.deleteDao(dao.id);
+        await daoService.deleteDao(dao.id);
         navigate("/");
       }
     } catch (error) {

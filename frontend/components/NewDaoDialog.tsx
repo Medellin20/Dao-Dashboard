@@ -42,13 +42,8 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import {
-  DEFAULT_TASKS,
-  type Dao,
-  type TeamMember,
-  type User,
-} from "@shared/dao";
-import { apiService } from "@/services/api";
+import { type Dao, type TeamMember, type User } from "@shared/dao";
+import { daoService } from "@/services/daoService";
 import { authService } from "@/services/authService";
 import { notificationService } from "@/services/notificationService";
 
@@ -99,7 +94,9 @@ function generateDaoNumberFallback(existingDaos: any[]): string {
 }
 
 interface NewDaoDialogProps {
-  onCreateDao: (dao: Omit<Dao, "id" | "createdAt" | "updatedAt">) => void;
+  onCreateDao: (
+    dao: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">,
+  ) => void;
   existingDaos: Dao[];
 }
 
@@ -131,7 +128,7 @@ export default function NewDaoDialog({
           setUsers(usersList);
 
           // Fetch next DAO number
-          const nextNumber = await apiService.getNextDaoNumber();
+          const nextNumber = await daoService.getNextDaoNumber();
           setFormData((prev) => ({ ...prev, numeroListe: nextNumber }));
         } catch (error) {
           console.warn("Failed to fetch data from server:", error);
@@ -267,7 +264,7 @@ export default function NewDaoDialog({
     }
 
     try {
-      const newDao: Omit<Dao, "id" | "createdAt" | "updatedAt"> = {
+      const newDao: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks"> = {
         numeroListe: formData.numeroListe,
         objetDossier: formData.objetDossier,
         reference: formData.reference,
@@ -281,12 +278,6 @@ export default function NewDaoDialog({
               ...formData.teamMembers,
             ]
           : formData.teamMembers,
-        tasks: DEFAULT_TASKS.map((task) => ({
-          ...task,
-          progress: null,
-          comment: undefined,
-          assignedTo: undefined,
-        })),
       };
 
       await onCreateDao(newDao);

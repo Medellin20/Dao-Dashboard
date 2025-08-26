@@ -36,10 +36,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { GRID_CLASSES } from "@/types/responsive";
-import { apiService } from "@/services/api";
+import { daoService } from "@/services/daoService";
 import { testProgressCalculations } from "@/utils/test-calculations";
 import { testGlobalStatistics } from "@/utils/test-global-stats";
 import { runAllTests } from "@/utils/test-dao-functionality";
+import { testDaoService } from "@/utils/test-dao-service";
+import { testDaoCreation } from "@/utils/test-dao-creation";
 import {
   calculateDaoStatus,
   calculateDaoProgress,
@@ -289,7 +291,7 @@ export default function Index() {
       try {
         setLoading(true);
         setError(null);
-        const fetchedDaos = await apiService.getAllDaos();
+        const fetchedDaos = await daoService.getAllDaos();
         setDaos(fetchedDaos);
 
         // Run calculation tests in development
@@ -324,16 +326,40 @@ export default function Index() {
 
   // Handle creating new DAO
   const handleCreateDao = async (
-    newDaoData: Omit<Dao, "id" | "createdAt" | "updatedAt">,
+    newDaoData: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">,
   ) => {
     try {
-      const createdDao = await apiService.createDao(newDaoData);
+      devLog.log("🔄 Creating DAO with data:", newDaoData);
+      const createdDao = await daoService.createDao(newDaoData);
+      devLog.log("✅ DAO created successfully:", createdDao);
       setDaos((prev) => [createdDao, ...prev]);
+      setError(null); // Clear any previous errors
     } catch (err) {
-      devLog.error("Error creating DAO:", err);
-      setError("Failed to create DAO");
+      devLog.error("❌ Error creating DAO:", err);
+      setError(
+        `Failed to create DAO: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
     }
   };
+
+  // Tests de développement
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.shiftKey && event.key === "D") {
+        devLog.clear();
+        devLog.log("🧪 Test du service DAO...");
+        testDaoService();
+      }
+      if (event.ctrlKey && event.shiftKey && event.key === "C") {
+        devLog.clear();
+        devLog.log("🧪 Test de création de DAO...");
+        testDaoCreation();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const filteredDaos = useDaoFilters(daos, searchTerm, filters);
 

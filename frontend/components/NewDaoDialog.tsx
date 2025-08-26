@@ -42,11 +42,7 @@ import {
 } from "@/components/ui/popover";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import {
-  type Dao,
-  type TeamMember,
-  type User,
-} from "@shared/dao";
+import { type Dao, type TeamMember, type User } from "@shared/dao";
 import { daoService } from "@/services/daoService";
 import { authService } from "@/services/authService";
 import { notificationService } from "@/services/notificationService";
@@ -98,7 +94,9 @@ function generateDaoNumberFallback(existingDaos: any[]): string {
 }
 
 interface NewDaoDialogProps {
-  onCreateDao: (dao: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">) => void;
+  onCreateDao: (
+    dao: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks">,
+  ) => void;
   existingDaos: Dao[];
 }
 

@@ -336,7 +336,9 @@ export default function Index() {
       setError(null); // Clear any previous errors
     } catch (err) {
       devLog.error("❌ Error creating DAO:", err);
-      setError(`Failed to create DAO: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      setError(
+        `Failed to create DAO: ${err instanceof Error ? err.message : "Unknown error"}`,
+      );
     }
   };
 

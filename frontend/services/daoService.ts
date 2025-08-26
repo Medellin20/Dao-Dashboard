@@ -8,7 +8,11 @@ import type {
   TeamMember,
   TaskComment,
 } from "@shared/dao";
-import { calculateDaoStatus, calculateDaoProgress, DEFAULT_TASKS } from "@shared/dao";
+import {
+  calculateDaoStatus,
+  calculateDaoProgress,
+  DEFAULT_TASKS,
+} from "@shared/dao";
 import { apiService } from "./api";
 import { cacheService } from "./cacheService";
 
@@ -181,7 +185,9 @@ class DaoService {
     updates: Partial<Omit<TeamMember, "id">>,
   ): Promise<Dao> {
     const dao = await this.getDaoById(daoId);
-    const memberIndex = dao.equipe.findIndex((member) => member.id === memberId);
+    const memberIndex = dao.equipe.findIndex(
+      (member) => member.id === memberId,
+    );
 
     if (memberIndex === -1) {
       throw new Error(`Membre avec l'ID ${memberId} non trouvé`);
@@ -258,7 +264,8 @@ class DaoService {
           daoEnCours,
           daoTermines,
           daoArisque,
-          progressionGlobale: daos.length > 0 ? Math.round(totalProgress / daos.length) : 0,
+          progressionGlobale:
+            daos.length > 0 ? Math.round(totalProgress / daos.length) : 0,
         };
       },
       60 * 1000, // Cache 1 minute
@@ -274,7 +281,10 @@ class DaoService {
       cacheKey,
       async () => {
         const daos = await this.getAllDaos();
-        const taskProgressMap = new Map<number, { totalProgress: number; count: number; name: string }>();
+        const taskProgressMap = new Map<
+          number,
+          { totalProgress: number; count: number; name: string }
+        >();
 
         // Aggreger les progrès par tâche
         for (const dao of daos) {
@@ -331,8 +341,11 @@ class DaoService {
 
       // Filtre par autorité contractante
       if (filters.autoriteContractante) {
-        if (!dao.autoriteContractante.toLowerCase()
-          .includes(filters.autoriteContractante.toLowerCase())) {
+        if (
+          !dao.autoriteContractante
+            .toLowerCase()
+            .includes(filters.autoriteContractante.toLowerCase())
+        ) {
           return false;
         }
       }
@@ -358,7 +371,7 @@ class DaoService {
       // Filtre par équipe
       if (filters.equipe) {
         const hasTeamMember = dao.equipe.some((member) =>
-          member.name.toLowerCase().includes(filters.equipe!.toLowerCase())
+          member.name.toLowerCase().includes(filters.equipe!.toLowerCase()),
         );
         if (!hasTeamMember) return false;
       }
@@ -383,7 +396,7 @@ class DaoService {
         dao.reference.toLowerCase().includes(searchTerm) ||
         dao.autoriteContractante.toLowerCase().includes(searchTerm) ||
         dao.equipe.some((member) =>
-          member.name.toLowerCase().includes(searchTerm)
+          member.name.toLowerCase().includes(searchTerm),
         )
       );
     });
@@ -421,7 +434,9 @@ class DaoService {
   getDaysUntilDeadline(dao: Dao): number {
     const today = new Date();
     const deadlineDate = new Date(dao.dateDepot);
-    return Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+    return Math.ceil(
+      (deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
+    );
   }
 
   /**
@@ -443,7 +458,7 @@ class DaoService {
    */
   getInProgressTasks(dao: Dao): DaoTask[] {
     return dao.tasks.filter(
-      (task) => task.isApplicable && (task.progress || 0) < 100
+      (task) => task.isApplicable && (task.progress || 0) < 100,
     );
   }
 
@@ -452,15 +467,20 @@ class DaoService {
    */
   getCompletedTasks(dao: Dao): DaoTask[] {
     return dao.tasks.filter(
-      (task) => task.isApplicable && task.progress === 100
+      (task) => task.isApplicable && task.progress === 100,
     );
   }
 
   /**
    * Calcule la répartition des tâches par membre d'équipe
    */
-  getTaskDistribution(dao: Dao): Record<string, { member: TeamMember; taskCount: number }> {
-    const distribution: Record<string, { member: TeamMember; taskCount: number }> = {};
+  getTaskDistribution(
+    dao: Dao,
+  ): Record<string, { member: TeamMember; taskCount: number }> {
+    const distribution: Record<
+      string,
+      { member: TeamMember; taskCount: number }
+    > = {};
 
     // Initialiser avec tous les membres d'équipe
     dao.equipe.forEach((member) => {
@@ -484,7 +504,7 @@ class DaoService {
     cacheService.delete("all-daos");
     cacheService.delete("dao-stats");
     cacheService.delete("task-global-progress");
-    
+
     // Invalider aussi les caches individuels des DAO
     cacheService.deletePattern("dao-");
   }
@@ -501,15 +521,26 @@ class DaoService {
    */
   async cloneDao(
     daoId: string,
-    newData: Partial<Pick<Dao, "numeroListe" | "objetDossier" | "reference" | "autoriteContractante" | "dateDepot">>
+    newData: Partial<
+      Pick<
+        Dao,
+        | "numeroListe"
+        | "objetDossier"
+        | "reference"
+        | "autoriteContractante"
+        | "dateDepot"
+      >
+    >,
   ): Promise<Dao> {
     const originalDao = await this.getDaoById(daoId);
-    
+
     const clonedDao = {
       numeroListe: newData.numeroListe || `${originalDao.numeroListe}_COPIE`,
-      objetDossier: newData.objetDossier || `${originalDao.objetDossier} (Copie)`,
+      objetDossier:
+        newData.objetDossier || `${originalDao.objetDossier} (Copie)`,
       reference: newData.reference || `${originalDao.reference}_COPIE`,
-      autoriteContractante: newData.autoriteContractante || originalDao.autoriteContractante,
+      autoriteContractante:
+        newData.autoriteContractante || originalDao.autoriteContractante,
       dateDepot: newData.dateDepot || originalDao.dateDepot,
       equipe: [...originalDao.equipe], // Copie de l'équipe
     };

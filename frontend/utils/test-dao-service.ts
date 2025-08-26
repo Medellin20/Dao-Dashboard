@@ -15,7 +15,7 @@ export async function testDaoService() {
 
     if (daos.length > 0) {
       const firstDao = daos[0];
-      
+
       // Test 2: Récupération d'un DAO spécifique
       devLog.log("📋 Test 2: Récupération d'un DAO spécifique");
       const singleDao = await daoService.getDaoById(firstDao.id);
@@ -30,17 +30,21 @@ export async function testDaoService() {
       // Test 4: Statistiques globales
       devLog.log("📋 Test 4: Statistiques globales");
       const stats = await daoService.getDaoStats();
-      devLog.log(`✅ Stats: ${stats.totalDaos} total, ${stats.daoEnCours} en cours, ${stats.daoTermines} terminés`);
+      devLog.log(
+        `✅ Stats: ${stats.totalDaos} total, ${stats.daoEnCours} en cours, ${stats.daoTermines} terminés`,
+      );
 
       // Test 5: Recherche
       devLog.log("📋 Test 5: Recherche");
-      const searchResults = await daoService.searchDaos(firstDao.numeroListe.substring(0, 3));
+      const searchResults = await daoService.searchDaos(
+        firstDao.numeroListe.substring(0, 3),
+      );
       devLog.log(`✅ ${searchResults.length} résultats de recherche`);
 
       // Test 6: Filtrage
       devLog.log("📋 Test 6: Filtrage");
       const filteredResults = await daoService.getFilteredDaos({
-        autoriteContractante: firstDao.autoriteContractante
+        autoriteContractante: firstDao.autoriteContractante,
       });
       devLog.log(`✅ ${filteredResults.length} résultats filtrés`);
     }
@@ -52,7 +56,6 @@ export async function testDaoService() {
 
     devLog.log("🎉 Tous les tests du service DAO réussis!");
     return true;
-
   } catch (error) {
     devLog.error("❌ Erreur lors du test du service DAO:", error);
     return false;
@@ -62,12 +65,12 @@ export async function testDaoService() {
 /**
  * Déclenche le test avec Ctrl+Shift+D
  */
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.ctrlKey && event.shiftKey && event.key === 'D') {
+    if (event.ctrlKey && event.shiftKey && event.key === "D") {
       testDaoService();
     }
   };
 
-  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener("keydown", handleKeyDown);
 }

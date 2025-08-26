@@ -21,7 +21,7 @@ export async function testDaoCreation() {
         email: "chef@test.com",
       },
       {
-        id: "test-member-1", 
+        id: "test-member-1",
         name: "Membre Test",
         role: "membre_equipe" as const,
         email: "membre@test.com",
@@ -31,20 +31,19 @@ export async function testDaoCreation() {
 
   try {
     devLog.log("📋 Données de test:", testDao);
-    
+
     const createdDao = await daoService.createDao(testDao);
-    
+
     devLog.log("✅ DAO créé avec succès:", createdDao);
     return createdDao;
-    
   } catch (error) {
     devLog.error("❌ Erreur lors de la création:", error);
-    
+
     if (error instanceof Error) {
       devLog.error("Message d'erreur:", error.message);
       devLog.error("Stack trace:", error.stack);
     }
-    
+
     return null;
   }
 }
@@ -52,12 +51,12 @@ export async function testDaoCreation() {
 /**
  * Test avec Ctrl+Shift+C
  */
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.ctrlKey && event.shiftKey && event.key === 'C') {
+    if (event.ctrlKey && event.shiftKey && event.key === "C") {
       testDaoCreation();
     }
   };
 
-  window.addEventListener('keydown', handleKeyDown);
+  window.addEventListener("keydown", handleKeyDown);
 }

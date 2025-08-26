@@ -43,7 +43,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import {
-  DEFAULT_TASKS,
   type Dao,
   type TeamMember,
   type User,

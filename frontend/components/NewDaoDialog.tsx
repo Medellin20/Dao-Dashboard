@@ -267,7 +267,7 @@ export default function NewDaoDialog({
     }
 
     try {
-      const newDao: Omit<Dao, "id" | "createdAt" | "updatedAt"> = {
+      const newDao: Omit<Dao, "id" | "createdAt" | "updatedAt" | "tasks"> = {
         numeroListe: formData.numeroListe,
         objetDossier: formData.objetDossier,
         reference: formData.reference,
@@ -281,12 +281,6 @@ export default function NewDaoDialog({
               ...formData.teamMembers,
             ]
           : formData.teamMembers,
-        tasks: DEFAULT_TASKS.map((task) => ({
-          ...task,
-          progress: null,
-          comment: undefined,
-          assignedTo: undefined,
-        })),
       };
 
       await onCreateDao(newDao);

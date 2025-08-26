@@ -6,10 +6,9 @@ import type {
   DaoStatus,
   TaskGlobalProgress,
   TeamMember,
-  DEFAULT_TASKS,
   TaskComment,
 } from "@shared/dao";
-import { calculateDaoStatus, calculateDaoProgress } from "@shared/dao";
+import { calculateDaoStatus, calculateDaoProgress, DEFAULT_TASKS } from "@shared/dao";
 import { apiService } from "./api";
 import { cacheService } from "./cacheService";
 

@@ -189,8 +189,12 @@ router.post(
   sensitiveOperationLimit(),
   (req, res) => {
     try {
+      console.log("🔄 Creating DAO - Request body:", JSON.stringify(req.body, null, 2));
+      console.log("🔄 User:", req.user?.email, req.user?.role);
+
       // Validate and sanitize input
       const validatedData = createDaoSchema.parse(req.body);
+      console.log("✅ Validation passed:", JSON.stringify(validatedData, null, 2));
 
       // Additional security checks
       if (daoStorage.size() > 10000) {

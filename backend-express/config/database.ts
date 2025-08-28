@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { logger } from "../utils/logger.js";
 
 const MONGODB_URI =
-  process.env.MONGODB_URI || "mongodb://localhost:27017/dao-management";
+  process.env.MONGODB_URI || "mongodb+srv://ahmedbensariane:Zolazed1233@cluster123.4x8oi3k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster123";
 
 export async function connectToDatabase() {
   try {

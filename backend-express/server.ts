@@ -3,7 +3,7 @@ import { createServer } from "./index.js";
 import { logger } from "./utils/logger.js";
 
 const app = createServer();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001; // <-- changé 3001 -> 5000
 
 app.listen(PORT, () => {
   logger.info(`🚀 Secure backend server running on port ${PORT}`, "SERVER");
@@ -14,7 +14,6 @@ app.listen(PORT, () => {
   logger.info(`  ✅ Input validation`, "SERVER");
   logger.info(`  ✅ CORS protection`, "SERVER");
   logger.info(`  ✅ Helmet security headers`, "SERVER");
-  logger.info(`  ✅ Audit logging`, "SERVER");
   logger.info(
     `📡 API endpoints available at http://localhost:${PORT}/api/`,
     "SERVER",
